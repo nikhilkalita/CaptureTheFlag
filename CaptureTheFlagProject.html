@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+canvas { border: 5px solid turquoise; }
+
+</style>
+
+<body>
+
+<input type="button" onclick="blackpanther()" value = "BLACK PANTHER"> </input>
+
+<input type="button" onclick="rap()" value = "RAP"> </input>
+
+<input type="button" onclick="rock()" value = "ROCK"> </input>
+
+<input type="button" onclick="alternative()" value = "ALTERNATIVE"> </input>
+
+<input type="button" onclick="reggaeton()" value = "REGGAETON"> </input>
+
+<input type="button" onclick="RnB()" value = "R&B"> </input>
+
+<input type="button" onclick="patriotism()" value = "PATRIOTISM"> </input>
+
+<input type="button" onclick="u2()" value = "U2"> </input>
+
+<input type="button" onclick="happy()" value = "HAPPY"> </input>
+
+<input type="button" onclick="chill()" value = "CHILL"> </input>
+
+<canvas width=1220 height=560 id="myCanvas"></canvas>
+
+<script>
+
+function blackpanther() {
+	music.setAttribute("src", "music.mp3");
+	music.loop = true;
+	music.play();
+}
+function rap() {
+	music.setAttribute("src", "music2.mp3");
+	music.loop = true;
+	music.play();
+}
+function rock() {
+	music.setAttribute("src", "music3.mp3");
+	music.loop = true;
+	music.play();
+}
+function alternative() {
+	music.setAttribute("src", "music5.mp3");
+	music.loop = true;
+	music.play();
+}
+function reggaeton() {
+	music.setAttribute("src", "music4.mp3");
+	music.loop = true;
+	music.play();
+}
+function RnB() {
+	music.setAttribute("src", "music6.mp3");
+	music.loop = true;
+	music.play();
+}
+function patriotism() {
+	music.setAttribute("src", "music7.mp3");
+	music.loop = true;
+	music.play();
+}
+function u2() {
+	music.setAttribute("src", "music8.mp3");
+	music.loop = true;
+	music.play();
+}
+function happy() {
+	music.setAttribute("src", "music9.mp3");
+	music.loop = true;
+	music.play();
+}
+function chill() {
+	music.setAttribute("src", "music10.mp3");
+	music.loop = true;
+	music.play();
+}
+
+addEventListener("keydown", keyDown, false);
+addEventListener("keyup", keyUp, false);
+
+
+var music = document.createElement("AUDIO");
+music.setAttribute("src", "music.mp3");
+music.loop = true;
+music.play();
+
+var canvas = document.getElementById("myCanvas");
+var context = canvas.getContext("2d");
+
+var itsAThing = new Thing();
+
+var redFlagX = 25, redFlagY = 250;
+var goldFlagX = 1145, goldFlagY = 250;
+
+var redscore = 0, goldscore = 0;
+
+setInterval(animate, 33);
+
+function animate() {
+	drawBackground();
+    makeThingsDoSomething();
+    drawThings();
+
+		if (redFlagCarry()) {
+			redFlagX = itsAThing.x2;
+			redFlagY = itsAThing.y2;
+				if(itsAThing.x2 > 1070) {
+					goldscore++;
+					redFlagX = 25;
+					redFlagY = 250;
+				}
+		}
+
+		if (goldFlagCarry()) {
+			goldFlagX = itsAThing.x;
+			goldFlagY = itsAThing.y;
+				if(itsAThing.x < 63) {
+					redscore++;
+					goldFlagX = 1145;
+					goldFlagY = 250;
+			}
+		}
+
+		drawScore();
+}
+
+function drawBackground() {
+	context.fillStyle = "white";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+		//backgroundcolors
+		context.beginPath();
+		context.lineWidth="10";
+		context.fillStyle="red";
+		context.fillRect(100,0,490,1000);
+		context.stroke();
+
+		context.beginPath();
+		context.lineWidth="10";
+		context.fillStyle="gold";
+		context.fillRect(590,0,515,1000);
+		context.stroke();
+
+}
+
+function makeThingsDoSomething() {
+	itsAThing.takeAction();
+}
+
+function drawThings() {
+
+	var src = null;
+//	 context.drawImage( itsAThing.spriteSheetRight, 0 , 0, 120,120, 0, 0, 120, 120);
+
+	if(itsAThing.movingRight){
+			src = itsAThing.spriteSheetRight;
+		}
+	else if(itsAThing.movingLeft){
+			src = itsAThing.spriteSheetLeft;
+		}
+	else if(itsAThing.movingUp){
+			src = itsAThing.spriteSheetUp;
+		}
+	else if(itsAThing.movingDown){
+			src = itsAThing.spriteSheetDown;
+		}
+	else{
+			src = itsAThing.spriteSheetDown;
+		}
+
+		context.drawImage( src,
+							itsAThing.currImage*itsAThing.imageWidth , 0, itsAThing.imageWidth, itsAThing.imageHeight,
+							itsAThing.x, itsAThing.y, itsAThing.imageWidth, itsAThing.imageHeight );
+
+	var src2 = null;
+//	 context.drawImage( itsAThing.spriteSheetRight, 0 , 0, 120,120, 0, 0, 120, 120);
+
+	if(itsAThing.movingRight2){
+			src2 = itsAThing.spriteSheetRight2;
+		}
+	else if(itsAThing.movingLeft2){
+			src2 = itsAThing.spriteSheetLeft2;
+		}
+	else if(itsAThing.movingUp2){
+			src2 = itsAThing.spriteSheetUp2;
+		}
+	else if(itsAThing.movingDown2){
+			src2 = itsAThing.spriteSheetDown2;
+		}
+	else{
+			src2 = itsAThing.spriteSheetDown2;
+		}
+
+		context.drawImage( src2,
+							itsAThing.currImage2*itsAThing.imageWidth2 , 0, itsAThing.imageWidth2, itsAThing.imageHeight2,
+							itsAThing.x2, itsAThing.y2, itsAThing.imageWidth2, itsAThing.imageHeight2 );
+
+		context.drawImage(itsAThing.flag1, redFlagX, redFlagY);
+		context.drawImage(itsAThing.flag2, goldFlagX, goldFlagY);
+
+	//primitive barriers
+	context.beginPath();
+	context.lineWidth="40";
+	context.strokeStyle="turquoise";
+	context.rect(120,0,30,75);
+	context.stroke();
+
+	context.beginPath();
+	context.lineWidth="40";
+	context.strokeStyle="turquoise";
+	context.rect(120,230,30,100);
+	context.stroke();
+
+	context.beginPath();
+	context.lineWidth="40";
+	context.strokeStyle="turquoise";
+	context.rect(120,485,30,75);
+	context.stroke();
+
+	//golden barriers
+	context.beginPath();
+	context.lineWidth="40";
+	context.strokeStyle="turquoise";
+	context.rect(1055,0,30,75);
+	context.stroke();
+
+	context.beginPath();
+	context.lineWidth="40";
+	context.strokeStyle="turquoise";
+	context.rect(1055,230,30,100);
+	context.stroke();
+
+	context.beginPath();
+	context.lineWidth="40";
+	context.strokeStyle="turquoise";
+	context.rect(1055,485,30,75);
+	context.stroke();
+
+
+	//middle barriers
+	context.beginPath();
+	context.lineWidth="60";
+	context.strokeStyle="turquoise";
+	context.rect(565,120,50,70);
+	context.stroke();
+
+	context.beginPath();
+	context.lineWidth="60";
+	context.strokeStyle="turquoise";
+	context.rect(565,350,50,70);
+	context.stroke();
+
+}
+
+function keyDown(evt) {
+  if(evt.key == 'w')itsAThing.movingUp = true;
+  else if(evt.key == 's')itsAThing.movingDown = true;
+  else if(evt.key == 'a')itsAThing.movingLeft = true;
+  else if(evt.key == 'd')itsAThing.movingRight = true;
+
+  if(evt.key == 'i')itsAThing.movingUp2 = true;
+  else if(evt.key == 'k')itsAThing.movingDown2 = true;
+  else if(evt.key == 'j')itsAThing.movingLeft2 = true;
+  else if(evt.key == 'l')itsAThing.movingRight2 = true;
+
+}
+function keyUp(evt) {
+  if(evt.key == 'w')itsAThing.movingUp = false;
+  else if(evt.key == 's')itsAThing.movingDown = false;
+  else if(evt.key == 'a')itsAThing.movingLeft = false;
+  else if(evt.key == 'd')itsAThing.movingRight = false;
+
+  if(evt.key == 'i')itsAThing.movingUp2 = false;
+  else if(evt.key == 'k')itsAThing.movingDown2 = false;
+  else if(evt.key == 'j')itsAThing.movingLeft2 = false;
+  else if(evt.key == 'l')itsAThing.movingRight2 = false;
+}
+
+
+function Thing() {
+  this.speed = 8;
+
+  this.x = 0;
+  this.y = 231;
+  this.movingUp = false;
+  this.movingDown = false;
+  this.movingLeft = false;
+  this.movingRight = false;
+  this.currImage=0;
+  this.imageWidth=63.9;
+  this.imageHeight=70;
+
+  this.x2 = 1258;
+  this.y2 = 231;
+  this.movingUp2 = false;
+  this.movingDown2 = false;
+  this.movingLeft2 = false;
+  this.movingRight2 = false;
+  this.currImage2=0;
+  this.imageWidth2=63.9;
+  this.imageHeight2=70;
+
+	this.spriteSheetRight = new Image();
+		this.spriteSheetRight.src = "CTFPrimitiveRunnerRight.png";
+	//	this.spriteSheetRight.src = "spritesheetCoolRunnerRight.png";
+
+	this.spriteSheetDown = new Image();
+		this.spriteSheetDown.src = "CTFPrimitiveRunnerDown.png";
+
+	this.spriteSheetLeft = new Image();
+		this.spriteSheetLeft.src = "CTFPrimitiveRunnerLeft.png";
+
+	this.spriteSheetUp = new Image();
+		this.spriteSheetUp.src = "CTFPrimitiveRunnerUp.png";
+	//if collision, myWall.move();
+
+	this.spriteSheetRight2 = new Image();
+		this.spriteSheetRight2.src = "CTFGoldenRunnerRight.png";
+
+	this.spriteSheetDown2 = new Image();
+		this.spriteSheetDown2.src = "CTFGoldenRunnerDown.png";
+
+	this.spriteSheetLeft2 = new Image();
+		this.spriteSheetLeft2.src = "CTFGoldenRunnerLeft.png";
+
+	this.spriteSheetUp2 = new Image();
+		this.spriteSheetUp2.src = "CTFGoldenRunnerUp.png";
+
+	this.flag1 = new Image();
+		this.flag1.src = "Flag01.png";
+
+	this.flag2 = new Image();
+		this.flag2.src = "Flag02.png";
+	//if collision, myWall.move();
+
+  this.takeAction = function() {
+    if (this.movingUp || this.movingDown || this.movingRight || this.movingLeft)
+			this.currImage++;
+		this.currImage %= 6;
+
+		var origX1 = this.x;
+		var origY1 = this.y;
+
+		//move...
+    if(this.movingUp) this.y -= this.speed;
+    else if(this.movingDown) this.y += this.speed;
+
+    if(this.movingLeft) this.x -= this.speed;
+    else if(this.movingRight) this.x += this.speed;
+
+		//check for collision and backup if hit wall
+		if( collideWithWall(this.x, this.y, this.imageWidth, this.imageHeight) ) {
+			this.x = origX1;
+			this.y = origY1;
+		}
+
+	//clean up data...keep it onscreen...could also take any
+	//other actions at this point...or could take actions
+	//before the movement section above
+	if(this.x < 0) this.x = 0;
+	else if(this.x + this.imageWidth > canvas.width)
+		this.x = canvas.width - this.imageWidth;
+
+	if(this.y < 0) this.y = 0;
+	else if(this.y + this.imageHeight > canvas.height)
+		this.y = canvas.height - this.imageHeight;
+
+		var origX2 = this.x2;
+		var origY2 = this.y2;
+
+	if (this.movingUp2 || this.movingDown2 || this.movingRight2 || this.movingLeft2)
+		this.currImage2++;
+	this.currImage2 %= 6;
+
+    if(this.movingUp2) this.y2 -= this.speed;
+    else if(this.movingDown2) this.y2 += this.speed;
+
+    if(this.movingLeft2) this.x2 -= this.speed;
+    else if(this.movingRight2) this.x2 += this.speed;
+
+		//check for collision and backup if hit wall
+		if( collideWithWall(this.x2, this.y2, this.imageWidth2, this.imageHeight2) ) {
+			this.x2 = origX2;
+			this.y2 = origY2;
+		}
+
+	//clean up data...keep it onscreen...could also take any
+	//other actions at this point...or could take actions
+	//before the movement section above
+	if(this.x2 < 0) this.x2 = 0;
+	else if(this.x2 + this.imageWidth2 > canvas.width)
+		this.x2 = canvas.width - this.imageWidth2;
+
+	if(this.y2 < 0) this.y2 = 0;
+	else if(this.y2 + this.imageHeight2 > canvas.height)
+		this.y2 = canvas.height - this.imageHeight2;
+
+		if(collideWithEachOther ()) {
+			if(this.x > 555 && this.x2 > 555 && this.x < 1070 && this.x2 < 1070) {
+				if (redFlagCarry()) {
+					this.x2 = 1500;
+					this.y2 = 250;
+					redFlagX = 25;
+					redFlagY = 250;
+				}
+				else if (goldFlagCarry()) {
+					this.x = 0;
+					this.y = 250;
+					goldFlagX = 1145;
+					goldFlagY = 250;
+				}
+				else {
+					this.x = 0;
+					this.y = 250;
+				}
+			}
+		}
+		if(collideWithEachOther ()) {
+			if (this.x > 1070 && this.x2 > 1070){
+				this.x = origX1;
+				this.y = origY1;
+				this.x2 = origX2;
+				this.y2 = origY2;
+			}
+		}
+
+		if(collideWithEachOther ()) {
+			if(53 < this.x && this.x < 545 && 53 < this.x2 && this.x2 < 545) {
+				if (goldFlagCarry()) {
+					this.x = 0;
+					this.y = 250;
+					goldFlagX = 1145;
+					goldFlagY = 250;
+				}
+				else if (redFlagCarry()) {
+					this.x2 = 1500;
+					this.y2 = 250;
+					redFlagX = 25;
+					redFlagY = 250;
+				}
+				else {
+					this.x2 = 1500;
+					this.y2 = 250;
+				}
+			}
+		}
+
+		if(collideWithEachOther ()) {
+			if (this.x < 53 && this.x2 < 53){
+				this.x = origX1;
+				this.y = origY1;
+				this.x2 = origX2;
+				this.y2 = origY2;
+			}
+		}
+
+  		// if this.x && this.x2 > halfway side x position (ex: 1000) && collideWithEachOther
+			// . . . reset the x and y coordinates to the original spawn point
+
+			//do the above twice, one for each side
+		}
+  }
+
+ //function collideWithFlag(this.x, this.y, this.imageWidth, this.imageHeight) {
+	//if(this.x < flag2.x + flag2.imageWidth && this.x + this.imageWidth > flag2.x &&
+           //this.y < flag2.y + flag2.imageHeight && this.y + this.imageHeight > flag2.y ) {
+			//return true;
+	//}
+	//else {
+		//return false;
+	//}
+//}
+
+function drawScore () {
+	context.font = "96px Georgia";
+	context.fillStyle = "red";
+	context.fillText(" " + redscore, 545, 182);
+
+	context.fillStyle = "yellow";
+	context.fillText(" " + goldscore, 545, 410);
+}
+
+function redFlagCarry () {
+	if(itsAThing.x2 < redFlagX + 15 && itsAThing.x2 + itsAThing.imageWidth2 > redFlagX &&
+            itsAThing.y2 < redFlagY + 40 && itsAThing.y2 + itsAThing.imageHeight2 > redFlagY ) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+function goldFlagCarry () {
+	if(itsAThing.x < goldFlagX + 15 && itsAThing.x + itsAThing.imageWidth > goldFlagX &&
+            itsAThing.y < goldFlagY + 40 && itsAThing.y + itsAThing.imageHeight > goldFlagY ) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+function collideWithEachOther() {
+	if(itsAThing.x < itsAThing.x2 + itsAThing.imageWidth2 - 40 && itsAThing.x + itsAThing.imageWidth - 40 > itsAThing.x2 &&
+            itsAThing.y < itsAThing.y2 + itsAThing.imageHeight2 - 25 && itsAThing.y + itsAThing.imageHeight - 25 > itsAThing.y2 ) {
+			return true;
+	}
+	else {
+			return false;
+	}
+}
+
+function collideWithWall (xP, yP, wi, ht) {
+	//check for collision with wall 1  (120,0,30,75);
+	if(xP < 120 + 33 && xP + wi > 120 &&
+            yP < 0 + 77 && yP + ht > 0 ) {
+			return true;
+	}
+	//now check wall 2   (120,230,30,100);
+	if(xP < 120 + 33 && xP + wi > 120 &&
+						yP < 230 + 109 && yP + ht > 230 ) {
+			return true;
+	}
+	//now check wall 3   (120,485,30,75);
+	if(xP < 120 + 33 && xP + wi > 120 &&
+						yP < 485 + 77 && yP + ht > 485 ) {
+			return true;
+	}
+	//now check wall 4   (565,120,50,70);
+	if(xP < 565 + 64 && xP + wi > 565 &&
+						yP < 120 + 85 && yP + ht > 120 ) {
+			return true;
+	}
+	//now check wall 5   (565,350,50,70);
+	if(xP < 565 + 64 && xP + wi > 565 &&
+						yP < 350 + 85 && yP + ht > 350 ) {
+			return true;
+	}
+	//now check wall 6   (1055,0,30,75);
+	if(xP < 1055 + 33 && xP + wi > 1055 &&
+						yP < 0 + 80 && yP + ht > 0 ) {
+			return true;
+	}
+	//now check wall 7   (1055,230,30,100);
+	if(xP < 1055 + 33 && xP + wi > 1055 &&
+						yP < 230 + 106 && yP + ht > 230 ) {
+			return true;
+	}
+	//now check wall 8   (1055,485,30,75);
+	if(xP < 1055 + 303 && xP + wi > 1055 &&
+						yP < 485 + 80 && yP + ht > 485 ) {
+			return true;
+
+	}
+
+	return false;
+
+}
+</script>
+</body>
+</html>
